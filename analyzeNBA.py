@@ -93,4 +93,4 @@ for path in getFiles(directory):
 exampleShotChart = playerShotCharts[203145]
 for d in exampleShotChart:
     for item in d:
-        print item
+        print(item)
