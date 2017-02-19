@@ -1,0 +1,112 @@
+Player
+    advanced - dictionary
+        game_id
+        team_id
+        player_id
+        opponent_id
+        period
+        season
+        min
+        off_rating
+        def_rating
+        ast_pct
+        ast_tov
+        ast_ratio
+        oreb_pct
+        dreb_pct
+        treb_pct
+        tm_tov_pct
+        efg_pct
+        ts_pct
+        usg_pct
+        pace
+        pie
+    fourFactors - dictionary
+        game_id
+        team_id
+        player_id
+        opponent_id
+        period
+        season
+        efg_pct
+        fta_rate
+        tm_tov_pct
+        oreb_pct
+        opp_efg_pct
+        opp_fta_rate
+        opp_tov_pct
+        opp_oreb_pct
+    misc - dictionary
+        game_id
+        team_id
+        player_id
+        opponent_id
+        period
+        season
+        pts_off_tov
+        pts_2nd_chance
+        pts_fb
+        pts_paint
+        opp_pts_off_tov
+        opp_pts_2nd_chance
+        opp_pts_fb
+        opp_pts_paint
+        blk
+        blka
+        pf
+        pfd
+    shotCharts - dictionary
+        game_id
+        team_id
+        opponent_id
+        player_id
+        game_event_id
+        period
+        season
+        minutes_remaining
+        seconds_remaining
+        event_type
+        action_type
+        shot_type
+        shot_distance
+        loc_x
+        loc_y
+        shot_attempted_flag
+        shot_made_flag
+        shot_zone_basic
+        shot_zone_area
+        shot_zone_range
+    usage - dictionary
+        game_id
+        team_id
+        player_id
+        opponent_id
+        period
+        season
+        usg_pct
+        pct_fgm
+        pct_fga
+        pct_fg3m
+        pct_fg3a
+        pct_ftm
+        pct_fta
+        pct_oreb
+        pct_dreb
+        pct_reb
+        pct_ast
+        pct_stl
+        pct_tov
+        pct_blk
+        pct_blka
+        pct_pf
+        pct_pfd
+        pct_pts
+    id - int
+    team_id - int
+    first - string
+    last - string
+    name - string
+    birth - string
+    position - string
+    dk_position - string
+    dk_id - int

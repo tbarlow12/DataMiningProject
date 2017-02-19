@@ -21,20 +21,15 @@ class Player(object):
     misc = {}
     usage = {}
     def addAdvanced(self,d):
-        for game in d:
-            self.advanced[game['game_id']] = game
+        self.advanced = d
     def addShotCharts(self,d):
-        for game in d:
-            self.shotCharts[game['game_id']] = game
+        self.shotCharts = d
     def addFourFactor(self,d):
-        for game in d:
-            self.fourFactors[game['game_id']] = game
+        self.fourFactors = d
     def addMisc(self,d):
-        for game in d:
-           self.misc[game['game_id']] = game
+        self.misc = d
     def addUsage(self,d):
-        for game in d:
-            self.usage[game['game_id']] = game
+        self.usage = d
     def toString(self):
         s = str(self.id) + '\nNAME:' + self.name + '\nPOS:' + self.position + \
             '\nDK_POS:' + self.dk_position + '\nDK_ID:' + self.dk_id + '\n'
@@ -56,7 +51,7 @@ class Player(object):
         self.dk_id = d['dk_id']
 def getFiles(folder):
     return [f for f in listdir(folder) if isfile(join(folder, f))]
-def jsonToDict(path):
+def jsonToList(path):
     with open(path) as f:
         t = f.read()
         return json.loads(t)
@@ -69,34 +64,34 @@ def addAdvanced(players):
     directory = 'nbaStats/advancedPlayer'
     for path in getFiles(directory):
         id = int(path[:-5])
-        d = jsonToDict(directory + '/' + path)
+        d = jsonToList(directory + '/' + path)
         players[id].addAdvanced(d)
 def addFourFactor(players):
     directory = 'nbaStats/playerFourFactor'
     for path in getFiles(directory):
         id = int(path[:-5])
-        d = jsonToDict(directory + '/' + path)
+        d = jsonToList(directory + '/' + path)
         players[id].addShotCharts(d)
 def addMisc(players):
     directory = 'nbaStats/playerMisc'
     for path in getFiles(directory):
         id = int(path[:-5])
-        d = jsonToDict(directory + '/' + path)
+        d = jsonToList(directory + '/' + path)
         players[id].addMisc(d)
 def addShotCharts(players):
     directory = 'nbaStats/playerShot'
     for path in getFiles(directory):
         id = int(path[:-5])
-        d = jsonToDict(directory + '/' + path)
+        d = jsonToList(directory + '/' + path)
         players[id].addShotCharts(d)
 def addUsage(players):
     directory = 'nbaStats/playerUsage'
     for path in getFiles(directory):
         id = int(path[:-5])
-        d = jsonToDict(directory + '/' + path)
+        d = jsonToList(directory + '/' + path)
         players[id].addUsage(d)
 def loadPlayers():
-    playerDict = jsonToDict('nbaStats/player.txt')
+    playerDict = jsonToList('nbaStats/player.txt')
     players = {}
     for d in playerDict:
         player = Player(d)
@@ -107,6 +102,13 @@ def loadPlayers():
     addShotCharts(players)
     addUsage(players)
     return players
+def loadGames():
+    games = {}
+    gameList = jsonToList('nbaStats/game.txt')
+    for game in gameList:
+        id = game['id']
+        games[game['id']] = game
+    return games
 def groupByPosition(players):
     grouped = {}
     junkPos = ['RP','TE','RP','D']
@@ -115,16 +117,56 @@ def groupByPosition(players):
         if pos in junkPos:
             continue
         if pos in grouped:
-            grouped[pos].append(player)
+            grouped[pos][player.id] = player
         else:
-            group = [player]
+            group = {}
+            group[player.id] = player
             grouped[pos] = group
     return grouped
-def main():
-    allPlayers = loadPlayers()
-    grouped_by_position = groupByPosition(allPlayers)
-    for position in grouped_by_position:
-        print(position + ': ' + str(len(grouped_by_position[position])))
+def getAverage(d,key,seasons):
+    total = 0.0
+    count = 0
+    for val in d:
+        if val['season'] in seasons:
+            total += float(val[key])
+            count += 1
+    if count > 0:
+        return total / float(count)
+    else:
+        return 0
+def getAdvancedAverages(player,seasons):
+    result = []
+    result.append(getAverage(player.advanced,'off_rating',seasons))
+    result.append(getAverage(player.advanced,'def_rating',seasons))
+    '''result.append(getAverage(player.advanced,'ast_pct',seasons))
+    result.append(getAverage(player.advanced,'ast_tov',seasons))
+    result.append(getAverage(player.advanced,'ast_ratio',seasons))
+    result.append(getAverage(player.advanced,'oreb_pct',seasons))
+    result.append(getAverage(player.advanced,'dreb_pct',seasons))
+    result.append(getAverage(player.advanced,'treb_pct',seasons))
+    result.append(getAverage(player.advanced,'tm_tov_pct',seasons))
+    result.append(getAverage(player.advanced,'efg_pct',seasons))
+    result.append(getAverage(player.advanced,'ts_pct',seasons))
+    result.append(getAverage(player.advanced,'usg_pct',seasons))
+    result.append(getAverage(player.advanced,'pace',seasons))
+    result.append(getAverage(player.advanced,'pie',seasons))'''
+    return result
+def getAveStats(players,games,seasons):
+    result = []
+    for player in players.values():
+        result.append(getAdvancedAverages(player,seasons))
+    return result
 
+
+def main():
+    games = loadGames()
+    allPlayers = loadPlayers()
+    seasons = ['2010','2011']
+    aveStats = getAveStats(allPlayers,games,seasons)
+    for item in aveStats:
+        print(item)
+    #grouped_by_position = groupByPosition(allPlayers)
+    #for position in grouped_by_position:
+    #    print(position + ': ' + str(len(grouped_by_position[position])))
 if __name__ == '__main__':
     main()
