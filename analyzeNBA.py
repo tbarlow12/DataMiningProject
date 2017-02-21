@@ -1,6 +1,7 @@
 import json
 from os import listdir
 from os.path import isfile, join
+import csv
 def normalizePosition(pos):
     d = {
         'SG':'Shooting Guard',
@@ -15,11 +16,14 @@ def normalizePosition(pos):
         return d[pos]
     return pos
 class Player(object):
+    boxScore = {}
     advanced = {}
     shotCharts = {}
     fourFactors = {}
     misc = {}
     usage = {}
+    def addBoxScore(self,d):
+        self.boxScore = d
     def addAdvanced(self,d):
         self.advanced = d
     def addShotCharts(self,d):
@@ -90,12 +94,19 @@ def addUsage(players):
         id = int(path[:-5])
         d = jsonToList(directory + '/' + path)
         players[id].addUsage(d)
+def addBoxScore(players):
+    directory = 'nbaStats/playerBoxScore'
+    for path in getFiles(directory):
+        id = int(path[:-5])
+        d = jsonToList(directory + '/' + path)
+        players[id].addBoxScore(d)
 def loadPlayers():
     playerDict = jsonToList('nbaStats/player.txt')
     players = {}
     for d in playerDict:
         player = Player(d)
         players[player.id] = player
+    addBoxScore(players)
     addAdvanced(players)
     addFourFactor(players)
     addMisc(players)
@@ -128,43 +139,68 @@ def getAverage(d,key,seasons):
     count = 0
     for val in d:
         if val['season'] in seasons:
-            total += float(val[key])
+            try:
+                total += float(val[key])
+            except ValueError:
+                total += 0
             count += 1
     if count > 0:
         return total / float(count)
     else:
         return 0
+boxScoreCategories = ['fgm','fga','fg3m','fg3a','ftm','fta','oreb','dreb',
+                      'ast','blk','stl','to','pf','pts','plus_minus',]
+def getBoxScoreAverages(player,seasons):
+    result = []
+    for category in boxScoreCategories:
+        result.append(getAverage(player.boxScore,category,seasons))
+    return result
+advancedCategories = ['off_rating','def_rating','ast_pct','ast_tov','ast_ratio',
+                      'oreb_pct','dreb_pct','treb_pct','tm_tov_pct','efg_pct',
+                      'ts_pct','usg_pct','pace','pie']
 def getAdvancedAverages(player,seasons):
     result = []
-    result.append(getAverage(player.advanced,'off_rating',seasons))
-    result.append(getAverage(player.advanced,'def_rating',seasons))
-    '''result.append(getAverage(player.advanced,'ast_pct',seasons))
-    result.append(getAverage(player.advanced,'ast_tov',seasons))
-    result.append(getAverage(player.advanced,'ast_ratio',seasons))
-    result.append(getAverage(player.advanced,'oreb_pct',seasons))
-    result.append(getAverage(player.advanced,'dreb_pct',seasons))
-    result.append(getAverage(player.advanced,'treb_pct',seasons))
-    result.append(getAverage(player.advanced,'tm_tov_pct',seasons))
-    result.append(getAverage(player.advanced,'efg_pct',seasons))
-    result.append(getAverage(player.advanced,'ts_pct',seasons))
-    result.append(getAverage(player.advanced,'usg_pct',seasons))
-    result.append(getAverage(player.advanced,'pace',seasons))
-    result.append(getAverage(player.advanced,'pie',seasons))'''
+    for category in advancedCategories:
+        result.append(getAverage(player.advanced,category,seasons))
     return result
 def getAveStats(players,games,seasons):
     result = []
     for player in players.values():
-        result.append(getAdvancedAverages(player,seasons))
+        playerStats = [player.id,player.name,player.getPosition()]
+        playerStats.extend(getBoxScoreAverages(player,seasons))
+        playerStats.extend(getAdvancedAverages(player,seasons))
+        result.append(playerStats)
     return result
-
-
+def getOutputName(seasons):
+    result = 'averages/'
+    result += seasons[0]
+    if len(seasons) > 1:
+        result += '-' + seasons[len(seasons)-1]
+    result += '.csv'
+    return result
+def outputStatsCsv(allPlayers,games,seasons):
+    outputName = getOutputName(seasons)
+    aveStats = getAveStats(allPlayers,games,seasons)
+    header = ['id','name','position']
+    header.extend(boxScoreCategories)
+    header.extend(advancedCategories)
+    with open(outputName,'w',newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        for item in aveStats:
+            writer.writerow(item)
 def main():
     games = loadGames()
     allPlayers = loadPlayers()
-    seasons = ['2010','2011']
-    aveStats = getAveStats(allPlayers,games,seasons)
-    for item in aveStats:
-        print(item)
+    outputStatsCsv(allPlayers,games,['2010'])
+    outputStatsCsv(allPlayers,games,['2011'])
+    outputStatsCsv(allPlayers,games,['2012'])
+    outputStatsCsv(allPlayers,games,['2013'])
+    outputStatsCsv(allPlayers,games,['2014'])
+    outputStatsCsv(allPlayers,games,['2015'])
+    outputStatsCsv(allPlayers,games,['2016'])
+    outputStatsCsv(allPlayers,games,['2010','2011','2012','2013','2014','2015','2016'])
+
     #grouped_by_position = groupByPosition(allPlayers)
     #for position in grouped_by_position:
     #    print(position + ': ' + str(len(grouped_by_position[position])))

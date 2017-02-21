@@ -1,4 +1,27 @@
 Player
+    boxScore - dictionary
+        game_id
+        team_id
+        player_id
+        opponent_id
+        period
+        season
+        min
+        fgm
+        fga
+        fg3m
+        fg3a
+        ftm
+        fta
+        oreb
+        dreb
+        ast
+        blk
+        stl
+        to
+        pf
+        pts
+        plus_minus
     advanced - dictionary
         game_id
         team_id
