@@ -2,12 +2,22 @@
 
 def normalizePosition(pos):
     d = {
-        'SG':'Shooting Guard',
-        'PG':'Point Guard',
+        'SG':'Guard',
+        'PG':'Guard',
         'G':'Guard',
-        'SF':'Small Forward',
-        'PF':'Power Forward',
+        'SF':'Forward',
+        'PF':'Forward',
         'C':'Center',
+        'Guard-Forward':'Guard',
+        'Forward-Guard':'Forward',
+        'Forward-Center':'Forward',
+        'Point Guard':'Guard',
+        'Shooting Guard':'Guard',
+        'Small Forward':'Forward',
+        'Power Forward': 'Forward',
+        'Center-Forward':'Center',
+        'RP' : 'None',
+        'TE' : 'None',
         '':'Unknown'
     }
     if pos in d:

@@ -114,10 +114,21 @@ def point_list_remove(l,point):
                 del(l[i])
 
 #Returns the index (in coords) of closest point
-def index_closest_point(point,coords):
+def index_closest_coords(point, coords):
     min_dist = float('inf')
     index = 0
     points = coords_to_points(coords)
+    distances = distances_from(point,points)
+    for i in range(0,len(distances)):
+        item = distances[i]
+        if item[1] < min_dist:
+            min_dist = item[1]
+            index = i
+    return index
+
+def index_closest_point(point, points):
+    min_dist = float('inf')
+    index = 0
     distances = distances_from(point,points)
     for i in range(0,len(distances)):
         item = distances[i]
@@ -133,7 +144,6 @@ def index_closest_point(point,coords):
 def get_points_from_list(l):
     points = []
     for item in l:
-        print(item)
         p = Point(item)
         points.append(p)
     return points
@@ -243,7 +253,7 @@ def lloyds(points,k,pickFunction,picked):
         for a in assigned:
             point = a[0]
             assignedCluster = a[1]
-            indexClosestCluster = index_closest_point(a[0],C)
+            indexClosestCluster = index_closest_coords(a[0], C)
             if indexClosestCluster != assignedCluster:
                 changed = True #a = [point,assignedCluster]
                 point_list_remove(point_list[assignedCluster],point)
@@ -280,7 +290,7 @@ def lloyds3(points,k,centers):
     assigned = {}
     C = [p.coords for p in centers]
     for p in points:
-        closest_center = index_closest_point(p,C)
+        closest_center = index_closest_coords(p, C)
         assigned[p.index] = [closest_center,p.coords]
         reval_center(C, closest_center, assigned)
     changed = True
@@ -288,7 +298,7 @@ def lloyds3(points,k,centers):
         changed = False
         for point in points:
             old = assigned[point.index][0]
-            closest_center = index_closest_point(point,C)
+            closest_center = index_closest_coords(point, C)
             if old != closest_center:
                 assigned[point.index] = [closest_center,point.coords]
                 reval_center(C, old, assigned)
@@ -307,7 +317,7 @@ def lloyds2(points,k,centers):
         changed = False
         for point in points:
             id = point.index
-            closest_center = index_closest_point(point,C)
+            closest_center = index_closest_coords(point, C)
             if id in assigned:
                 if assigned[id] != closest_center:
                     assigned[id] = closest_center

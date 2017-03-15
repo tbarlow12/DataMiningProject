@@ -4,19 +4,7 @@ from os.path import isfile, join
 from player import player
 import csv
 
-def normalizePosition(pos):
-    d = {
-        'SG':'Shooting Guard',
-        'PG':'Point Guard',
-        'G':'Guard',
-        'SF':'Small Forward',
-        'PF':'Power Forward',
-        'C':'Center',
-        '':'Unknown'
-    }
-    if pos in d:
-        return d[pos]
-    return pos
+
 def getFiles(folder):
     return [f for f in listdir(folder) if isfile(join(folder, f))]
 def jsonToList(path):

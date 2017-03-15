@@ -1,10 +1,18 @@
 from clustering import clustering as cl
 import sys
+import collections
 
 
 def cluster_cost(points,k):
+    clusters = {}
     #km = cl.kMeansPlus(points,k)
     centers = cl.lloyds(points,k,cl.gonzalez,None)
+    center_coords = [p.coords for p in centers]
+    for i in range(0,len(centers)):
+        clusters[i] = []
+    for p in points:
+        closest_center = cl.index_closest_coords(p, center_coords)
+        clusters[closest_center].append(p.index)
     return cl.cost1(points,centers)
 
 def min_cluster_cost(points,start,end):
@@ -22,7 +30,7 @@ def min_cluster_cost(points,start,end):
 def get_players(csv_path):
     players = {}
     with open(csv_path) as f:
-        p_lines = [line.split(',') for line in f.readlines()]
+        p_lines = [line.split(';') for line in f.readlines()]
         stat_headers = p_lines[0][3:]
         for p in p_lines[1:]:
             id = int(p[0])
@@ -32,10 +40,8 @@ def get_players(csv_path):
             players[id] = [name,position,stats]
     return players, stat_headers
 
-
-def main():
+def get_data(csv_path):
     #path = sys.argv[1]
-    csv_path = 'averages/2010-2016.csv'
     player_list = get_players(csv_path)
     player_dict = player_list[0]
     stat_headers = player_list[1]
@@ -51,8 +57,63 @@ def main():
 
     points = cl.get_points_from_list(points_list)
 
-    result = min_cluster_cost(points,5,20)
-    print('Min: ' + str(result))
+    return player_dict, stat_headers, points
+
+
+def assign_clusters(centers, points, player_dict):
+    clusters = {}
+    for i in range(0,len(centers)):
+        clusters[i] = []
+    for p in points:
+        closest_center = cl.index_closest_point(p, centers)
+        clusters[closest_center].append(player_dict[p.index])
+    return clusters
+
+
+def cluster_points(points,player_dict,k):
+    #km = cl.kMeansPlus(points,k)
+    centers = cl.lloyds(points,k,cl.kMeansPlus,None)
+    return assign_clusters(centers,points,player_dict)
+
+
+def get_position_dict(l):
+    pos_dict = {}
+    for item in l:
+        position = item[1]
+        if position in pos_dict:
+            pos_dict[position] += 1
+        else:
+            pos_dict[position] = 1
+    return pos_dict
+
+
+def print_cluster_stats(clusters):
+    i = 1
+    for l in clusters.values():
+        print('\n\nCLUSTER {} - Size: {}'.format(i,len(l)))
+        pos_dict = get_position_dict(l)
+        ordered = collections.OrderedDict(sorted(pos_dict.items()))
+        for item in ordered:
+            print('{} : {}%'.format(item, ((ordered[item] / len(l)) * 100)))
+        for p in l:
+            print(p[0], p[1])
+        i += 1
+
+
+
+def main():
+    path = 'averages/2010-2016.csv'
+    data = get_data(path)
+    player_dict = data[0]
+    stat_headers = data[1]
+    points = data[2]
+
+    clusters = cluster_points(points,player_dict,6)
+
+    print_cluster_stats(clusters)
+    
+    #result = min_cluster_cost(points,5,20)
+    #print('Min: ' + str(result))
 
 
 if __name__ == '__main__':
