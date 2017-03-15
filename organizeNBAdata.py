@@ -1,7 +1,9 @@
 import json
 from os import listdir
 from os.path import isfile, join
+from player import player
 import csv
+
 def normalizePosition(pos):
     d = {
         'SG':'Shooting Guard',
@@ -15,44 +17,6 @@ def normalizePosition(pos):
     if pos in d:
         return d[pos]
     return pos
-class Player(object):
-    boxScore = {}
-    advanced = {}
-    shotCharts = {}
-    fourFactors = {}
-    misc = {}
-    usage = {}
-    def addBoxScore(self,d):
-        self.boxScore = d
-    def addAdvanced(self,d):
-        self.advanced = d
-    def addShotCharts(self,d):
-        self.shotCharts = d
-    def addFourFactor(self,d):
-        self.fourFactors = d
-    def addMisc(self,d):
-        self.misc = d
-    def addUsage(self,d):
-        self.usage = d
-    def toString(self):
-        s = str(self.id) + '\nNAME:' + self.name + '\nPOS:' + self.position + \
-            '\nDK_POS:' + self.dk_position + '\nDK_ID:' + self.dk_id + '\n'
-        return s
-    def getPosition(self):
-        pos = self.position
-        if len(pos) == 0:
-            pos = self.dk_position
-        return normalizePosition(pos)
-    def __init__(self,d):
-        self.id = int(d['id'])
-        self.team_id = int(d['team_id'])
-        self.first = d['first_name']
-        self.last = d['last_name']
-        self.name = self.first + ' ' + self.last
-        self.birth = d['birth_date']
-        self.position = d['position']
-        self.dk_position = d['dk_position']
-        self.dk_id = d['dk_id']
 def getFiles(folder):
     return [f for f in listdir(folder) if isfile(join(folder, f))]
 def jsonToList(path):
@@ -104,8 +68,8 @@ def loadPlayers():
     playerDict = jsonToList('nbaStats/player.txt')
     players = {}
     for d in playerDict:
-        player = Player(d)
-        players[player.id] = player
+        p = player.Player(d)
+        players[p.id] = p
     addBoxScore(players)
     addAdvanced(players)
     addFourFactor(players)
@@ -163,12 +127,41 @@ def getAdvancedAverages(player,seasons):
     for category in advancedCategories:
         result.append(getAverage(player.advanced,category,seasons))
     return result
+
+
+shotChartCategories = ['minutes_remaining','seconds_remaining','event_type','action_type','shot_type',
+                       'shot_distance','loc_x','loc_y','shot_attempted_flag','shot_made_flag',
+                       'shot_zone_basic','shot_zone_area','shot_zone_range']
+valuesDict = {}
+
+def getDistinctValues(keys,l):
+    for v in l:
+        for k in keys:
+            if k in valuesDict:
+                valuesDict[k].add(v[k])
+            else:
+                s = set()
+                s.add(v[k])
+                valuesDict[k] = s
+
+numericalShotCategories = ['shot_distance','shot_made_flag','loc_x','loc_y']
+categoricalShotCategories = ['shot_zone_range','shot_zone_area','event_type','shot_type','shot_zone_basic','action_type']
+def getShotChartAverages(player,seasons):
+    result = []
+    for category in shotChartCategories:
+        result.append(getAverage(player.shotCharts,category,seasons))
+    #getDistinctValues(shotChartCategories,player.shotCharts)
+
+
+
+
 def getAveStats(players,games,seasons):
     result = []
     for player in players.values():
         playerStats = [player.id,player.name,player.getPosition()]
         playerStats.extend(getBoxScoreAverages(player,seasons))
         playerStats.extend(getAdvancedAverages(player,seasons))
+        
         result.append(playerStats)
     return result
 def getOutputName(seasons):
@@ -185,13 +178,21 @@ def outputStatsCsv(allPlayers,games,seasons):
     header.extend(boxScoreCategories)
     header.extend(advancedCategories)
     with open(outputName,'w',newline='') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f,delimiter=';')
         writer.writerow(header)
         for item in aveStats:
             writer.writerow(item)
+
+
 def main():
     games = loadGames()
     allPlayers = loadPlayers()
+    for player in allPlayers.values():
+        getShotChartAverages(player,['2010','2011','2012','2013','2014','2015','2016'])
+    with open('shotChartValues.txt','w',newline='') as f:
+        for v in valuesDict:
+            f.write(v + ': ' + str(valuesDict[v]) + '\n')
+    print('done')
     outputStatsCsv(allPlayers,games,['2010'])
     outputStatsCsv(allPlayers,games,['2011'])
     outputStatsCsv(allPlayers,games,['2012'])
