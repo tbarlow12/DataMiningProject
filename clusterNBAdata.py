@@ -70,10 +70,10 @@ def assign_clusters(centers, points, player_dict):
     return clusters
 
 
-def cluster_points(points,player_dict,k):
+def cluster_points(points,player_dict,k,picker_func):
     #km = cl.kMeansPlus(points,k)
-    centers = cl.lloyds(points,k,cl.kMeansPlus,None)
-    return assign_clusters(centers,points,player_dict)
+    centers = cl.lloyds(points,k,picker_func,None)
+    return centers, assign_clusters(centers,points,player_dict)
 
 
 def get_position_dict(l):
@@ -95,11 +95,20 @@ def print_cluster_stats(clusters):
         ordered = collections.OrderedDict(sorted(pos_dict.items()))
         for item in ordered:
             print('{} : {}%'.format(item, ((ordered[item] / len(l)) * 100)))
-        for p in l:
-            print(p[0], p[1])
         i += 1
 
 
+def run_clustering(picker_function,k,title,points,player_dict):
+
+
+    print('\n' + title)
+
+    clusters = cluster_points(points,player_dict,k,cl.kMeansPlus)
+    centers = clusters[0]
+    assigned_dict = clusters[1]
+    print_cluster_stats(assigned_dict)
+    print('\n\nCost 1')
+    print(cl.cost1(centers,points))
 
 def main():
     path = 'averages/2010-2016.csv'
@@ -108,11 +117,21 @@ def main():
     stat_headers = data[1]
     points = data[2]
 
-    clusters = cluster_points(points,player_dict,6)
 
-    print_cluster_stats(clusters)
-    
-    #result = min_cluster_cost(points,5,20)
+    k = 6
+
+    for k in range(4,10):
+        print('K: {}'.format(k))
+        run_clustering(cl.kMeansPlus,k,'K-MEANS++',points,player_dict)
+        run_clustering(cl.gonzalez,k,'GONZALEZ',points,player_dict)
+
+
+
+
+
+
+
+        #result = min_cluster_cost(points,5,20)
     #print('Min: ' + str(result))
 
 

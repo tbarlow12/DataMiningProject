@@ -86,6 +86,8 @@ def groupByPosition(players):
             group[player.id] = player
             grouped[pos] = group
     return grouped
+
+
 def getAverage(d,key,seasons):
     total = 0.0
     count = 0
@@ -133,13 +135,106 @@ def getDistinctValues(keys,l):
                 valuesDict[k] = s
 
 numericalShotCategories = ['shot_distance','shot_made_flag','loc_x','loc_y']
-categoricalShotCategories = ['shot_zone_range','shot_zone_area','event_type','shot_type','shot_zone_basic','action_type']
+
+categoricalShotCategories = {
+    'shot_zone_area': {'Right Side(R)',
+                       'Center(C)',
+                       'Left Side(L)',
+                       'Left Side Center(LC)',
+                       'Back Court(BC)',
+                       'Right Side Center(RC)'},
+    'action_type': {'Fadeaway Bank shot',
+                    'Running Layup Shot',
+                    'Jump Bank Hook Shot',
+                    'Driving Floating Jump Shot',
+                    'Step Back Jump shot',
+                    'Slam Dunk Shot',
+                    'Tip Layup Shot',
+                    'Driving Dunk Shot',
+                    'Hook Shot',
+                    'Running Alley Oop Layup Shot',
+                    'Running Tip Shot',
+                    'Running Pull-Up Jump Shot',
+                    'Fadeaway Jump Shot',
+                    'Putback Dunk Shot',
+                    'Tip Dunk Shot',
+                    'Running Reverse Layup Shot',
+                    'Running Finger Roll Layup Shot',
+                    'Putback Layup Shot',
+                    'Step Back Bank Jump Shot',
+                    'No Shot',
+                    'Turnaround Jump Shot',
+                    'Floating Jump shot',
+                    'Jump Shot',
+                    'Layup Shot',
+                    'Reverse Layup Shot',
+                    'Turnaround Fadeaway shot',
+                    'Hook Bank Shot',
+                    'Driving Jump shot',
+                    'Cutting Dunk Shot',
+                    'Driving Hook Shot',
+                    'Running Alley Oop Dunk Shot',
+                    'Alley Oop Layup shot',
+                    'Turnaround Bank Hook Shot',
+                    'Jump Bank Shot',
+                    'Reverse Dunk Shot',
+                    'Driving Floating Bank Jump Shot',
+                    'Turnaround Fadeaway Bank Jump Shot',
+                    'Running Dunk Shot',
+                    'Tip Shot',
+                    'Running Jump Shot',
+                    'Running Hook Shot',
+                    'Putback Slam Dunk Shot',
+                    'Driving Bank Hook Shot',
+                    'Turnaround Hook Shot',
+                    'Cutting Finger Roll Layup Shot',
+                    'Running Bank shot',
+                    'Pullup Jump shot',
+                    'Alley Oop Dunk Shot',
+                    'Reverse Slam Dunk Shot',
+                    'Running Slam Dunk Shot',
+                    'Driving Bank shot',
+                    'Driving Slam Dunk Shot',
+                    'Running Reverse Dunk Shot',
+                    'Pullup Bank shot',
+                    'Jump Hook Shot',
+                    'Driving Reverse Dunk Shot',
+                    'Driving Finger Roll Layup Shot',
+                    'Dunk Shot',
+                    'Turnaround Bank shot',
+                    'Driving Layup Shot',
+                    'Cutting Layup Shot',
+                    'Driving Reverse Layup Shot',
+                    'Running Bank Hook Shot',
+                    'Finger Roll Layup Shot'},
+    'shot_zone_range': {'16-24 ft.',
+                        'Back Court Shot',
+                        '24+ ft.',
+                        'Less Than 8 ft.',
+                        '8-16 ft.'},
+    'shot_zone_basic': {'Left Corner 3',
+                        'Right Corner 3',
+                        'Mid-Range',
+                        'In The Paint (Non-RA)',
+                        'Restricted Area',
+                        'Backcourt',
+                        'Above the Break 3'},
+    'event_type': {'Missed Shot',
+                   'Made Shot'},
+    'shot_type': {'3PT Field Goal',
+                  '2PT Field Goal'}
+}
+
+
 def getShotChartAverages(player,seasons):
     result = []
-    for category in shotChartCategories:
+    for category in numericalShotCategories:
         result.append(getAverage(player.shotCharts,category,seasons))
+    for category in categoricalShotCategories:
+        for shot_chart in player.shotCharts:
+            categoricalShotCategories[category].add(shot_chart[category])
     #getDistinctValues(shotChartCategories,player.shotCharts)
-
+    return result
 
 
 
@@ -149,8 +244,9 @@ def getAveStats(players,games,seasons):
         playerStats = [player.id,player.name,player.getPosition()]
         playerStats.extend(getBoxScoreAverages(player,seasons))
         playerStats.extend(getAdvancedAverages(player,seasons))
-        
+        playerStats.extend(getShotChartAverages(player,seasons))
         result.append(playerStats)
+    print(categoricalShotCategories)
     return result
 def getOutputName(seasons):
     result = 'averages/'
