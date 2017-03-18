@@ -344,6 +344,7 @@ def cost2(points,centers):
         sum += np.square(euclidean(points[i].coords,closest_point(points[i],centers)[0].coords))
     return sum
 
+
 #k median cost function
 def cost1(centers,points):
     sum = 0.0
