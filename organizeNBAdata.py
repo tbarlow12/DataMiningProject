@@ -88,13 +88,23 @@ def groupByPosition(players):
     return grouped
 
 
+def get_float_minutes(s):
+    vals = s.split(':')
+    minutes = float(vals[0])
+    seconds = float(vals[0])
+    return minutes + (seconds / 60)
+
+
 def getAverage(d,key,seasons):
     total = 0.0
     count = 0
     for val in d:
         if val['season'] in seasons:
             try:
-                total += float(val[key])
+                if key == 'min':
+                    total += get_float_minutes(val[key])
+                else:
+                    total += float(val[key])
             except ValueError:
                 total += 0
             count += 1
@@ -102,7 +112,7 @@ def getAverage(d,key,seasons):
         return total / float(count)
     else:
         return 0
-boxScoreCategories = ['fgm','fga','fg3m','fg3a','ftm','fta','oreb','dreb',
+boxScoreCategories = ['min','fgm','fga','fg3m','fg3a','ftm','fta','oreb','dreb',
                       'ast','blk','stl','to','pf','pts','plus_minus',]
 def getBoxScoreAverages(player,seasons):
     result = []
@@ -137,13 +147,13 @@ def getDistinctValues(keys,l):
 numericalShotCategories = ['shot_distance','shot_made_flag','loc_x','loc_y']
 
 categoricalShotCategories = {
-    'shot_zone_area': {'Right Side(R)',
+    'shot_zone_area': ['Right Side(R)',
                        'Center(C)',
                        'Left Side(L)',
                        'Left Side Center(LC)',
                        'Back Court(BC)',
-                       'Right Side Center(RC)'},
-    'action_type': {'Fadeaway Bank shot',
+                       'Right Side Center(RC)'],
+    'action_type': ['Fadeaway Bank shot',
                     'Running Layup Shot',
                     'Jump Bank Hook Shot',
                     'Driving Floating Jump Shot',
@@ -206,47 +216,86 @@ categoricalShotCategories = {
                     'Cutting Layup Shot',
                     'Driving Reverse Layup Shot',
                     'Running Bank Hook Shot',
-                    'Finger Roll Layup Shot'},
-    'shot_zone_range': {'16-24 ft.',
+                    'Finger Roll Layup Shot'],
+    'shot_zone_range': ['16-24 ft.',
                         'Back Court Shot',
                         '24+ ft.',
                         'Less Than 8 ft.',
-                        '8-16 ft.'},
-    'shot_zone_basic': {'Left Corner 3',
+                        '8-16 ft.'],
+    'shot_zone_basic': ['Left Corner 3',
                         'Right Corner 3',
                         'Mid-Range',
                         'In The Paint (Non-RA)',
                         'Restricted Area',
                         'Backcourt',
-                        'Above the Break 3'},
-    'event_type': {'Missed Shot',
-                   'Made Shot'},
-    'shot_type': {'3PT Field Goal',
-                  '2PT Field Goal'}
+                        'Above the Break 3'],
+    'event_type': ['Missed Shot',
+                   'Made Shot'],
+    'shot_type': ['3PT Field Goal',
+                  '2PT Field Goal']
 }
 
+
+def getCategoricalShotCategories():
+    result = []
+    for category in categoricalShotCategories:
+        for c_type in categoricalShotCategories[category]:
+            result.append('{}-{}'.format(category,c_type))
+    return result
 
 def getShotChartAverages(player,seasons):
     result = []
     for category in numericalShotCategories:
         result.append(getAverage(player.shotCharts,category,seasons))
+
+    player_category_stats = {}
+
     for category in categoricalShotCategories:
-        for shot_chart in player.shotCharts:
-            categoricalShotCategories[category].add(shot_chart[category])
+        category_dict = {}
+        for c_type in categoricalShotCategories[category]:
+            category_dict[c_type] = 0
+            player_category_stats[category] = category_dict
+
+    for shot_chart in player.shotCharts:
+        for category in categoricalShotCategories:
+            c_type = shot_chart[category]
+            player_category_stats[category][c_type] += 1
+
+    shot_chart_count = float(len(player.shotCharts))
+
+    for category in player_category_stats:
+        category_dict = player_category_stats[category]
+        for c_type in category_dict:
+            val = category_dict[c_type]
+            if shot_chart_count > 0:
+                result.append(float(val) / shot_chart_count)
+            else:
+                result.append(0)
+
+
+
+
     #getDistinctValues(shotChartCategories,player.shotCharts)
     return result
 
+
+def getTotalGamesPlayed(player, seasons):
+    games = set()
+    for val in player.boxScore:
+        if val['season'] in seasons:
+            games.add(val['game_id'])
+    return len(games)
 
 
 def getAveStats(players,games,seasons):
     result = []
     for player in players.values():
         playerStats = [player.id,player.name,player.getPosition()]
+        playerStats.append(getTotalGamesPlayed(player,seasons))
         playerStats.extend(getBoxScoreAverages(player,seasons))
         playerStats.extend(getAdvancedAverages(player,seasons))
         playerStats.extend(getShotChartAverages(player,seasons))
         result.append(playerStats)
-    print(categoricalShotCategories)
     return result
 def getOutputName(seasons):
     result = 'averages/'
@@ -255,17 +304,28 @@ def getOutputName(seasons):
         result += '-' + seasons[len(seasons)-1]
     result += '.csv'
     return result
+
+
+def clean_row(row):
+    row[1] = row[1].replace(',','')
+    return row
+
+
 def outputStatsCsv(allPlayers,games,seasons):
     outputName = getOutputName(seasons)
     aveStats = getAveStats(allPlayers,games,seasons)
-    header = ['id','name','position']
+    header = ['id','name','position','recorded_games']
     header.extend(boxScoreCategories)
     header.extend(advancedCategories)
+    header.extend(numericalShotCategories)
+    header.extend(getCategoricalShotCategories())
     with open(outputName,'w',newline='') as f:
-        writer = csv.writer(f,delimiter=';')
+        writer = csv.writer(f,delimiter=',')
         writer.writerow(header)
         for item in aveStats:
-            writer.writerow(item)
+            row = clean_row(item)
+            if row[3] > 0:
+                writer.writerow(row)
 
 
 def main():
