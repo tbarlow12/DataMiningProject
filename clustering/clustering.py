@@ -236,33 +236,7 @@ def gonzalez(points,k):
         centers.append(f)
     return centers
 
-#Lloyd's k-means algorithm. Returns k centers of points
-#Allows for initialization function to be passed in or for
-#the centers themselves (points) to be passed in.
-#Whichever is used, the other should be None
-def lloyds(points,k,pickFunction,picked):
-    if picked is not None:
-        point_list = [[p] for p in picked]
-    else:
-        point_list = [[p] for p in pickFunction(points,k)]
-    C = [p[0].coords for p in point_list]
-    assigned = [[p,-1] for p in points]
-    changed = True
-    while(changed):
-        changed = False
-        for a in assigned:
-            point = a[0]
-            assignedCluster = a[1]
-            indexClosestCluster = index_closest_coords(a[0], C)
-            if indexClosestCluster != assignedCluster:
-                changed = True #a = [point,assignedCluster]
-                point_list_remove(point_list[assignedCluster],point)
-                if assignedCluster > 0:
-                    C[assignedCluster] = get_centroid(point_list[assignedCluster])
-                a[1] = indexClosestCluster
-                point_list[indexClosestCluster].append(point)
-                C[indexClosestCluster] = get_centroid(point_list[indexClosestCluster])
-    return coords_to_points(C)
+
 
 def keys_with_value(d,v):
     result = []
@@ -286,7 +260,7 @@ def reval_center(C, index, assigned):
     C[index] = get_centroid2(coords)
 
 
-def lloyds3(points,k,centers):
+def lloyds(points,k,centers):
     assigned = {}
     C = [p.coords for p in centers]
     for p in points:
@@ -307,34 +281,111 @@ def lloyds3(points,k,centers):
     return coords_to_points(C)
 
 
+def getMinDistance(set,d):
+    min = float('inf')
+    minP1 = -1
+    minP2 = -1
+    for p1 in d:
+        p1Dict = d[p1]
+        for p2 in p1Dict:
+            distance = p1Dict[p2]
+            if distance < min:
+                min = distance
+                minP1 = p1
+                minP2 = p2
+    return [min,minP1,minP2]
 
 
-def lloyds2(points,k,centers):
-    C = [p.coords for p in centers]
-    assigned = {}
-    changed = True
-    while(changed):
-        changed = False
-        for point in points:
-            id = point.index
-            closest_center = index_closest_coords(point, C)
-            if id in assigned:
-                if assigned[id] != closest_center:
-                    assigned[id] = closest_center
-                    changed = True
-                    C = reval_centers(C,assigned,points)
-            else:
-                assigned[id] = closest_center
-                changed = True
-                C = reval_centers(C,assigned,points)
-    points = []
-    for item in C:
-        line = [-1]
-        line.extend(item)
-        p = Point(line)
-        points.append(p)
-    return points
+def getMaxDistance(set,d):
+    max = -1
+    maxP1 = -1
+    maxP2 = -1
+    for p1 in d:
+        p1Dict = d[p1]
+        for p2 in p1Dict:
+            distance = p1Dict[p2]
+            if distance > max:
+                max = distance
+                maxP1 = p1
+                maxP2 = p2
+    return [max,maxP1,maxP2]
 
+
+def singleLink(c1,c2):
+    min = float('inf')
+    for p1 in c1:
+        for p2 in c2:
+            e = euclidean(p1.coords,p2.coords)
+            if e < min:
+                min = e
+    return min
+
+
+def completeLink(c1,c2):
+    max = 0
+    for p1 in c1:
+        for p2 in c2:
+            e = euclidean(p1.coords,p2.coords)
+            if e > max:
+                max = e
+    return max
+
+
+def meanLink(c1,c2):
+    s1 = get_centroid(c1)
+    s2 = get_centroid(c2)
+    return euclidean(s1,s2)
+
+
+
+def merge(clusters,closest_pair):
+    a = closest_pair[0]
+    b = closest_pair[1]
+    clusters[a].extend(clusters[b])
+    del(clusters[b])
+
+
+def closestClusters(clusters,distance):
+    closest_dist = float('inf')
+    closest_pair = []
+    for i in range(0,len(clusters)):
+        c1 = clusters[i]
+        for j in range(0,len(clusters)):
+            c2 = clusters[j]
+            if c1[0].index != c2[0].index:
+                d = distance(c1,c2)
+                if d < closest_dist:
+                    closest_dist = d
+                    closest_pair = [i,j]
+    return closest_pair
+
+def ave_dist(clusters):
+    total = 0.0
+    count = 0.0
+    for c in clusters:
+        for p1 in c:
+            for p2 in c:
+                total += euclidean(p1.coords,p2.coords)
+                count += 1
+    return total / count
+
+
+def hierarchicalClustering(set,k,distance):
+    if distance == 1:
+        distance_func = singleLink
+    elif distance == 2:
+        distance_func = completeLink
+    else:
+        distance_func = meanLink
+    clusters = [[p] for p in set]
+    while len(clusters) != k:
+        merge(clusters,closestClusters(clusters,distance_func))
+    i = 1
+    for c in clusters:
+        print('Cluster {}: '.format(i) + str([p.index for p in c]))
+        i += 1
+    print(ave_dist(clusters))
+    return clusters
 
 
 #k means cost function

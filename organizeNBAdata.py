@@ -319,6 +319,8 @@ def outputStatsCsv(allPlayers,games,seasons):
     header.extend(advancedCategories)
     header.extend(numericalShotCategories)
     header.extend(getCategoricalShotCategories())
+    for i in range(0,len(header)):
+        print('#{} : {}'.format(i,header[i]))
     with open(outputName,'w',newline='') as f:
         writer = csv.writer(f,delimiter=',')
         writer.writerow(header)
