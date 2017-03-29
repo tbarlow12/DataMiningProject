@@ -20,6 +20,21 @@ def min_dim(points,i):
             min = point.coords[i]
     return min
 
+def limit_dims(point,dims):
+    temp_coords = []
+    for dim in dims:
+        temp_coords.append(point.coords[dim])
+    new_point_line = [point.index]
+    new_point_line.extend(temp_coords)
+    p = Point(new_point_line)
+    return p
+
+def limit_all_dims(points,dims):
+    point_copies = []
+    for point in points:
+        point_copies.append(limit_dims(point,dims))
+    return point_copies
+
 
 def max_dim(points,i):
     max = float('inf')
@@ -260,7 +275,8 @@ def reval_center(C, index, assigned):
     C[index] = get_centroid2(coords)
 
 
-def lloyds(points,k,centers):
+def lloyds(points,k,initializer):
+    centers = initializer(points,k)
     assigned = {}
     C = [p.coords for p in centers]
     for p in points:
@@ -370,16 +386,12 @@ def ave_dist(clusters):
     return total / count
 
 
-def hierarchicalClustering(set,k,distance):
-    if distance == 1:
-        distance_func = singleLink
-    elif distance == 2:
-        distance_func = completeLink
-    else:
-        distance_func = meanLink
+def hierarchicalClustering(set,k,distance_func):
+
     clusters = [[p] for p in set]
     while len(clusters) != k:
         merge(clusters,closestClusters(clusters,distance_func))
+        print('Merged')
     i = 1
     for c in clusters:
         print('Cluster {}: '.format(i) + str([p.index for p in c]))

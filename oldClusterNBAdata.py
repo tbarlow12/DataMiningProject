@@ -30,7 +30,7 @@ def min_cluster_cost(points,start,end):
 def get_players(csv_path):
     players = {}
     with open(csv_path) as f:
-        p_lines = [line.split(';') for line in f.readlines()]
+        p_lines = [line.split(',') for line in f.readlines()]
         stat_headers = p_lines[0][3:]
         for p in p_lines[1:]:
             id = int(p[0])
@@ -53,7 +53,6 @@ def get_data(csv_path):
         point = [id]
         point.extend(val[2])
         points_list.append(point)
-
 
     points = cl.get_points_from_list(points_list)
 
