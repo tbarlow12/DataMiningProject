@@ -1,6 +1,8 @@
 import collections
 from clustering import clustering as cl
 import pdb
+from itertools import chain
+from itertools import combinations
 
 def get_players(csv_path):
     players = {}
@@ -12,7 +14,7 @@ def get_players(csv_path):
             name = p[1]
             position = p[2]
             stats = p[3:]
-            players[id] = [name,position,stats]
+            players[id] = [[id,name],position,stats]
     return players, stat_headers
 
 def get_data(csv_path):
@@ -36,9 +38,9 @@ def hierarchical_clusters(clusters, player_dict):
     return [[player_dict[i] for i in c] for c in clusters]
 
 def assign_clusters(centers, points, player_dict):
-    clusters = {}
+    clusters = []
     for i in range(0,len(centers)):
-        clusters[i] = []
+        clusters.append([])
     for p in points:
         closest_center = cl.index_closest_point(p, centers)
         clusters[closest_center].append(player_dict[p.index])
@@ -54,14 +56,36 @@ def get_position_dict(l):
             pos_dict[position] = 1
     return pos_dict
 
-def print_cluster_stats(clustering_method,k,clusters):
+
+
+def print_cluster_stats(clustering_method,k,clusters,feature_set,writer):
     #method,k,cluster,size,center,center-forward,forward-center,forward,forward-guard,guard-forward,guard
+    positions = ['Center','Center-Forward','Forward-Center','Forward','Forward-Guard','Guard-Forward','Guard']
     i = 1
-    pdb.set_trace()
-    for l in clusters.values():
-        print('\n\nCLUSTER {} - Size: {}'.format(i,len(l)))
-        pos_dict = get_position_dict(l)
-        ordered = collections.OrderedDict(sorted(pos_dict.items()))
-        for item in ordered:
-            print('{} : {}%'.format(item, ((ordered[item] / len(l)) * 100)))
+    for cluster in clusters:
+        #print('\n\nCLUSTER {} - Size: {}'.format(i,len(l)))
+        pos_dict = get_position_dict(cluster)
+        line = '{},{},{},{},'.format(clustering_method,k,i,len(cluster))
+        for position in positions:
+            if position in pos_dict:
+                line += '{},'.format(float(pos_dict[position]) / float(len(cluster)))
+            else:
+                line += '0,'
+        for item in feature_set:
+            line += str(item) + ' '
+        line = line[:-1]
+        line += ','
+        for player in cluster:
+            id = int(player[0][0])
+            line += str(id) + ' '
+        line = line[:-1]
+        writer.write(line + '\n')
         i += 1
+
+
+def all_possible_combinations(possible_features):
+    feature_sets = list(chain.from_iterable(combinations(possible_features, r) for r in range(len(possible_features)+1)))
+    result = []
+    for feature_set in feature_sets:
+        result.append(list(feature_set))
+    return result[1:]
