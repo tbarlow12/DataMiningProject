@@ -1,5 +1,6 @@
 import collections
 from clustering import clustering as cl
+import pdb
 
 def get_players(csv_path):
     players = {}
@@ -31,6 +32,9 @@ def get_data(csv_path):
 
     return player_dict, points
 
+def hierarchical_clusters(clusters, player_dict):
+    return [[player_dict[i] for i in c] for c in clusters]
+
 def assign_clusters(centers, points, player_dict):
     clusters = {}
     for i in range(0,len(centers)):
@@ -50,8 +54,10 @@ def get_position_dict(l):
             pos_dict[position] = 1
     return pos_dict
 
-def print_cluster_stats(clusters):
+def print_cluster_stats(clustering_method,k,clusters):
+    #method,k,cluster,size,center,center-forward,forward-center,forward,forward-guard,guard-forward,guard
     i = 1
+    pdb.set_trace()
     for l in clusters.values():
         print('\n\nCLUSTER {} - Size: {}'.format(i,len(l)))
         pos_dict = get_position_dict(l)

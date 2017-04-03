@@ -391,13 +391,8 @@ def hierarchicalClustering(set,k,distance_func):
     clusters = [[p] for p in set]
     while len(clusters) != k:
         merge(clusters,closestClusters(clusters,distance_func))
-        print('Merged')
-    i = 1
-    for c in clusters:
-        print('Cluster {}: '.format(i) + str([p.index for p in c]))
-        i += 1
-    print(ave_dist(clusters))
-    return clusters
+    #print(ave_dist(clusters))
+    return [[p.index for p in c] for c in clusters]
 
 
 #k means cost function
