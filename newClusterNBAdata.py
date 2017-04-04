@@ -45,7 +45,7 @@ def run_all_possible_combinations(points,player_dict,k_range):
 
     combinations = h.all_possible_combinations([0,1,2,3,4,5,6])
 
-    with open('output.csv','w') as f:
+    with open('hierarchicalOutput.csv','w') as f:
 
         f.write('Method,K,Cluster,Size,Center,Center-Forward,Forward-Center,Forward,Forward-Guard,Guard-Forward,Guard,Feature Set,Player IDs\n')
 
@@ -58,9 +58,8 @@ def run_all_possible_combinations(points,player_dict,k_range):
             #for k in k_range:
             #    run_hierarchical_clustering(points,player_dict,k,feature_set)
 
-            for k in k_range:
-                print(k)
-                run_assignment_clustering(points,player_dict,k,feature_set,f)
+            run_hierarchical_clustering(points,player_dict,7,feature_set,f)
+                
 
 
 
