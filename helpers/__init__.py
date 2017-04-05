@@ -68,7 +68,7 @@ def print_cluster_stats(clustering_method,k,clusters,feature_set,writer):
         line = '{},{},{},{},'.format(clustering_method,k,i,len(cluster))
         for position in positions:
             if position in pos_dict:
-                line += '{},'.format(float(pos_dict[position]) / float(len(cluster)))
+                line += '{},'.format(pos_dict[position])
             else:
                 line += '0,'
         for item in feature_set:
@@ -79,6 +79,8 @@ def print_cluster_stats(clustering_method,k,clusters,feature_set,writer):
             id = int(player[0][0])
             line += str(id) + ' '
         line = line[:-1]
+
+
         writer.write(line + '\n')
         i += 1
 

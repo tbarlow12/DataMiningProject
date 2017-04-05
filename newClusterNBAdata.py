@@ -29,9 +29,9 @@ def run_all_possible_combinations(points,player_dict,k_range):
     advanced_cols = range(16,31)
     shot_zone_basic_cols = range(37,44)
     shot_zone_range_cols = range(108,113)
-    shot_zone_area_cols = range(113,119)
+    shot_zone_area_cols = range(113,117)
     action_type_cols = range(44,108)
-    shot_type_cols = [119,120]
+    shot_type_cols = [117,118]
 
     grouped_cols_dict = {
         0: box_score_cols,
@@ -45,29 +45,23 @@ def run_all_possible_combinations(points,player_dict,k_range):
 
     combinations = h.all_possible_combinations([0,1,2,3,4,5,6])
 
-    with open('hierarchicalOutput.csv','w') as f:
+    with open('assignment_output_full.csv','w') as f:
 
-        f.write('Method,K,Cluster,Size,Center,Center-Forward,Forward-Center,Forward,Forward-Guard,Guard-Forward,Guard,Feature Set,Player IDs\n')
+        f.write('Method,K,Cluster,Size,Center,Center-Forward,Forward-Center,Forward,Forward-Guard,Guard-Forward,Guard,Feature Set,Player IDs,Centroid\n')
 
         for feature_set in combinations:
+            print(feature_set)
             features = []
             for group in feature_set:
                 features.extend(grouped_cols_dict[group])
             limited = cl.limit_all_dims(points,features)
 
-            #for k in k_range:
-            #    run_hierarchical_clustering(points,player_dict,k,feature_set)
-
-            run_hierarchical_clustering(points,player_dict,7,feature_set,f)
-                
-
-
-
+            run_assignment_clustering(points,player_dict,7,feature_set,f)
 
 
 
 def main():
-    path = 'averages/2016.csv'
+    path = 'averages/2010-2016.csv'
     data = h.get_data(path)
     player_dict = data[0]
     points = data[1]

@@ -326,7 +326,7 @@ def outputStatsCsv(allPlayers,games,seasons):
         writer.writerow(header)
         for item in aveStats:
             row = clean_row(item)
-            if row[3] > 0:
+            if row[4] >= 10:
                 writer.writerow(row)
 
 
