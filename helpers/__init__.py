@@ -60,7 +60,7 @@ def get_position_dict(l):
 
 def print_cluster_stats(clustering_method,k,clusters,feature_set,writer):
     #method,k,cluster,size,center,center-forward,forward-center,forward,forward-guard,guard-forward,guard
-    positions = ['Center','Center-Forward','Forward-Center','Forward','Forward-Guard','Guard-Forward','Guard']
+    positions = ['Center','Forward','Wing','Guard']
     i = 1
     for cluster in clusters:
         #print('\n\nCLUSTER {} - Size: {}'.format(i,len(l)))

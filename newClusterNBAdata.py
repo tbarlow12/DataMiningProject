@@ -49,14 +49,17 @@ def run_all_possible_combinations(points,player_dict,k_range):
 
         f.write('Method,K,Cluster,Size,Center,Forward,Wing,Guard,Feature Set,Player IDs,Centroid\n')
 
-        for feature_set in combinations:
-            print(feature_set)
-            features = []
-            for group in feature_set:
-                features.extend(grouped_cols_dict[group])
-            limited = cl.limit_all_dims(points,features)
 
-            run_assignment_clustering(points,player_dict,7,feature_set,f)
+        for k in k_range:
+            for feature_set in combinations:
+                print(feature_set)
+                features = []
+                for group in feature_set:
+                    features.extend(grouped_cols_dict[group])
+                limited = cl.limit_all_dims(points,features)
+
+                run_assignment_clustering(points,player_dict,k,feature_set,f)
+
 
 
 
@@ -67,7 +70,7 @@ def main():
     points = data[1]
 
     #see "ColumnKey.txt" for index of columns
-    run_all_possible_combinations(points,player_dict,range(3,20))
+    run_all_possible_combinations(points,player_dict,range(3,8))
 
 if __name__ == '__main__':
     main()
