@@ -47,7 +47,7 @@ def run_all_possible_combinations(points,player_dict,k_range):
 
     with open('assignment_output_full.csv','w') as f:
 
-        f.write('Method,K,Cluster,Size,Center,Center-Forward,Forward-Center,Forward,Forward-Guard,Guard-Forward,Guard,Feature Set,Player IDs,Centroid\n')
+        f.write('Method,K,Cluster,Size,Center,Forward,Wing,Guard,Feature Set,Player IDs,Centroid\n')
 
         for feature_set in combinations:
             print(feature_set)
