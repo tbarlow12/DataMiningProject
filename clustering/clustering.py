@@ -1,4 +1,5 @@
 import numpy as np
+import helpers as h
 import random
 import bisect
 
@@ -386,11 +387,14 @@ def ave_dist(clusters):
     return total / count
 
 
-def hierarchicalClustering(set,k,distance_func):
+def hierarchicalClustering(set,k,top_k,distance_func,feature_set,writer,path_name,player_dict):
 
     clusters = [[p] for p in set]
     while len(clusters) != k:
         merge(clusters,closestClusters(clusters,distance_func))
+        print(len(clusters))
+        if len(clusters) <= top_k:
+            h.print_cluster_stats('Single-Link',len(clusters),clusters,feature_set,writer,path_name,player_dict)
     #print(ave_dist(clusters))
     return [[p.index for p in c] for c in clusters]
 

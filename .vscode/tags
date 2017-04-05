@@ -5,7 +5,7 @@
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
 OAuthHandler	../twitterStream.py	/^from tweepy import OAuthHandler$/;"	kind:namespace	line:4
-Player	../player/player.py	/^class Player(object):$/;"	kind:class	line:29
+Player	../player/player.py	/^class Player(object):$/;"	kind:class	line:28
 Point	../clustering/clustering.py	/^class Point(object):$/;"	kind:class	line:6
 Request	../getNBAdata.py	/^from urllib2 import Request, urlopen, URLError$/;"	kind:namespace	line:1
 StdOutListener	../twitterStream.py	/^class StdOutListener(StreamListener):$/;"	kind:class	line:17
@@ -13,29 +13,29 @@ Stream	../twitterStream.py	/^from tweepy import Stream$/;"	kind:namespace	line:5
 StreamListener	../twitterStream.py	/^from tweepy.streaming import StreamListener$/;"	kind:namespace	line:3
 URLError	../getNBAdata.py	/^from urllib2 import Request, urlopen, URLError$/;"	kind:namespace	line:1
 __init__	../clustering/clustering.py	/^    def __init__(self,line):$/;"	kind:member	line:8
-__init__	../player/player.py	/^    def __init__(self,d):$/;"	kind:member	line:57
+__init__	../player/player.py	/^    def __init__(self,d):$/;"	kind:member	line:56
 __init__.py	../clustering/__init__.py	1;"	kind:file	line:1
 __init__.py	../helpers/__init__.py	1;"	kind:file	line:1
 __init__.py	../player/__init__.py	1;"	kind:file	line:1
 access_token	../twitterStream.py	/^access_token = 	'2618989681-qPyR0RumhmSADd4nJ5b70IudMY7v8ipE0a934OB'$/;"	kind:variable	line:14
 access_token_secret	../twitterStream.py	/^access_token_secret = '17K3QALr7gxfG5oVIecuAL93oGqRCalu7TzLqPY45ltTT'$/;"	kind:variable	line:15
 addAdvanced	../organizeNBAdata.py	/^def addAdvanced(players):$/;"	kind:function	line:19
-addAdvanced	../player/player.py	/^    def addAdvanced(self,d):$/;"	kind:member	line:38
+addAdvanced	../player/player.py	/^    def addAdvanced(self,d):$/;"	kind:member	line:37
 addBoxScore	../organizeNBAdata.py	/^def addBoxScore(players):$/;"	kind:function	line:49
-addBoxScore	../player/player.py	/^    def addBoxScore(self,d):$/;"	kind:member	line:36
+addBoxScore	../player/player.py	/^    def addBoxScore(self,d):$/;"	kind:member	line:35
 addFourFactor	../organizeNBAdata.py	/^def addFourFactor(players):$/;"	kind:function	line:25
-addFourFactor	../player/player.py	/^    def addFourFactor(self,d):$/;"	kind:member	line:42
+addFourFactor	../player/player.py	/^    def addFourFactor(self,d):$/;"	kind:member	line:41
 addMisc	../organizeNBAdata.py	/^def addMisc(players):$/;"	kind:function	line:31
-addMisc	../player/player.py	/^    def addMisc(self,d):$/;"	kind:member	line:44
+addMisc	../player/player.py	/^    def addMisc(self,d):$/;"	kind:member	line:43
 addShotCharts	../organizeNBAdata.py	/^def addShotCharts(players):$/;"	kind:function	line:37
-addShotCharts	../player/player.py	/^    def addShotCharts(self,d):$/;"	kind:member	line:40
+addShotCharts	../player/player.py	/^    def addShotCharts(self,d):$/;"	kind:member	line:39
 addUsage	../organizeNBAdata.py	/^def addUsage(players):$/;"	kind:function	line:43
-addUsage	../player/player.py	/^    def addUsage(self,d):$/;"	kind:member	line:46
-advanced	../player/player.py	/^    advanced = {}$/;"	kind:variable	line:31
+addUsage	../player/player.py	/^    def addUsage(self,d):$/;"	kind:member	line:45
+advanced	../player/player.py	/^    advanced = {}$/;"	kind:variable	line:30
 advancedCategories	../organizeNBAdata.py	/^advancedCategories = ['off_rating','def_rating','ast_pct','ast_tov','ast_ratio',$/;"	kind:variable	line:122
 advancedPlayerStats	../getNBAdata.py	/^def advancedPlayerStats(playerId):$/;"	kind:function	line:18
 advancedTeamStats	../getNBAdata.py	/^def advancedTeamStats(teamId):$/;"	kind:function	line:36
-all_possible_combinations	../helpers/__init__.py	/^def all_possible_combinations(possible_features):$/;"	kind:function	line:86
+all_possible_combinations	../helpers/__init__.py	/^def all_possible_combinations(possible_features):$/;"	kind:function	line:87
 api_key	../getNBAdata.py	/^api_key = '9LsHJP7EhGYdAlSeD3QIbWcitTafxpZM'$/;"	kind:variable	line:5
 assign_clusters	../helpers/__init__.py	/^def assign_clusters(centers, points, player_dict):$/;"	kind:function	line:40
 assign_clusters	../oldClusterNBAdata.py	/^def assign_clusters(centers, points, player_dict):$/;"	kind:function	line:62
@@ -44,11 +44,11 @@ average_dim	../clustering/clustering.py	/^def average_dim(points, i):$/;"	kind:f
 basicPlayerStats	../getNBAdata.py	/^def basicPlayerStats(playerId):$/;"	kind:function	line:8
 basicTeamStats	../getNBAdata.py	/^def basicTeamStats(teamId):$/;"	kind:function	line:27
 bisect	../clustering/clustering.py	/^import bisect$/;"	kind:namespace	line:3
-boxScore	../player/player.py	/^    boxScore = {}$/;"	kind:variable	line:30
+boxScore	../player/player.py	/^    boxScore = {}$/;"	kind:variable	line:29
 boxScoreCategories	../organizeNBAdata.py	/^boxScoreCategories = ['min','fgm','fga','fg3m','fg3a','ftm','fta','oreb','dreb',$/;"	kind:variable	line:115
 categoricalShotCategories	../organizeNBAdata.py	/^categoricalShotCategories = {$/;"	kind:variable	line:149
 cdf	../clustering/clustering.py	/^def cdf(weights):$/;"	kind:function	line:219
-center_cost	../clustering/clustering.py	/^def center_cost(centers,points):$/;"	kind:function	line:425
+center_cost	../clustering/clustering.py	/^def center_cost(centers,points):$/;"	kind:function	line:426
 chain	../helpers/__init__.py	/^from itertools import chain$/;"	kind:namespace	line:4
 choice	../clustering/clustering.py	/^def choice(population, weights):$/;"	kind:function	line:229
 cl	../helpers/__init__.py	/^from clustering import clustering as cl$/;"	kind:namespace	line:2
@@ -67,9 +67,9 @@ completeLink	../clustering/clustering.py	/^def completeLink(c1,c2):$/;"	kind:fun
 consumer_key	../twitterStream.py	/^consumer_key = 'tgxm3fkzxyyWFvEwFppZrsN3p'$/;"	kind:variable	line:12
 consumer_secret	../twitterStream.py	/^consumer_secret = 'R4OGuyMn0XppBmahsDvcuqrwnCykyh7JCRmxBTlhhzw6RZTJ9Z'$/;"	kind:variable	line:13
 coords_to_points	../clustering/clustering.py	/^def coords_to_points(coords):$/;"	kind:function	line:114
-cost1	../clustering/clustering.py	/^def cost1(centers,points):$/;"	kind:function	line:407
-cost2	../clustering/clustering.py	/^def cost2(points,centers):$/;"	kind:function	line:399
-cost_inf	../clustering/clustering.py	/^def cost_inf(points,centers):$/;"	kind:function	line:416
+cost1	../clustering/clustering.py	/^def cost1(centers,points):$/;"	kind:function	line:408
+cost2	../clustering/clustering.py	/^def cost2(points,centers):$/;"	kind:function	line:400
+cost_inf	../clustering/clustering.py	/^def cost_inf(points,centers):$/;"	kind:function	line:417
 csv	../organizeNBAdata.py	/^import csv$/;"	kind:namespace	line:5
 distances_from	../clustering/clustering.py	/^def distances_from(point,points):$/;"	kind:function	line:63
 distinctValues	../organizeNBAdata.py	/^def distinctValues(d,value):$/;"	kind:function	line:14
@@ -77,7 +77,7 @@ euclidean	../clustering/clustering.py	/^def euclidean(p1coords,p2coords):$/;"	ki
 extract_link	../twitterStream.py	/^def extract_link(text):$/;"	kind:function	line:33
 farthest_from_centers	../clustering/clustering.py	/^def farthest_from_centers(centers, points):$/;"	kind:function	line:88
 farthest_point	../clustering/clustering.py	/^def farthest_point(point,points):$/;"	kind:function	line:77
-fourFactors	../player/player.py	/^    fourFactors = {}$/;"	kind:variable	line:33
+fourFactors	../player/player.py	/^    fourFactors = {}$/;"	kind:variable	line:32
 getAdvancedAverages	../organizeNBAdata.py	/^def getAdvancedAverages(player,seasons):$/;"	kind:function	line:125
 getAveStats	../organizeNBAdata.py	/^def getAveStats(players,games,seasons):$/;"	kind:function	line:290
 getAverage	../organizeNBAdata.py	/^def getAverage(d,key,seasons):$/;"	kind:function	line:98
@@ -91,7 +91,7 @@ getMaxDistance	../clustering/clustering.py	/^def getMaxDistance(set,d):$/;"	kind
 getMinDistance	../clustering/clustering.py	/^def getMinDistance(set,d):$/;"	kind:function	line:300
 getNBAdata.py	../getNBAdata.py	1;"	kind:file	line:1
 getOutputName	../organizeNBAdata.py	/^def getOutputName(seasons):$/;"	kind:function	line:300
-getPosition	../player/player.py	/^    def getPosition(self):$/;"	kind:member	line:52
+getPosition	../player/player.py	/^    def getPosition(self):$/;"	kind:member	line:51
 getShotChartAverages	../organizeNBAdata.py	/^def getShotChartAverages(player,seasons):$/;"	kind:function	line:246
 getTotalGamesPlayed	../organizeNBAdata.py	/^def getTotalGamesPlayed(player, seasons):$/;"	kind:function	line:282
 get_centroid	../clustering/clustering.py	/^def get_centroid(points):$/;"	kind:function	line:183
@@ -110,7 +110,7 @@ get_probabilities	../clustering/clustering.py	/^def get_probabilities(c1,points)
 gonzalez	../clustering/clustering.py	/^def gonzalez(points,k):$/;"	kind:function	line:247
 groupByPosition	../organizeNBAdata.py	/^def groupByPosition(players):$/;"	kind:function	line:75
 h	../newClusterNBAdata.py	/^import helpers as h$/;"	kind:namespace	line:2
-hierarchicalClustering	../clustering/clustering.py	/^def hierarchicalClustering(set,k,distance_func):$/;"	kind:function	line:389
+hierarchicalClustering	../clustering/clustering.py	/^def hierarchicalClustering(set,k,distance_func,feature_set,writer,path_name,player_dict):$/;"	kind:function	line:389
 hierarchical_clusters	../helpers/__init__.py	/^def hierarchical_clusters(clusters, player_dict):$/;"	kind:function	line:37
 id	../getBoxScore.py	/^    id = int(player['id'])$/;"	kind:variable	line:18
 index_closest_coords	../clustering/clustering.py	/^def index_closest_coords(point, coords):$/;"	kind:function	line:132
@@ -133,7 +133,7 @@ lloyds	../clustering/clustering.py	/^def lloyds(points,k,initializer):$/;"	kind:
 loadGames	../organizeNBAdata.py	/^def loadGames():$/;"	kind:function	line:68
 loadPlayers	../organizeNBAdata.py	/^def loadPlayers():$/;"	kind:function	line:55
 main	../getNBAdata.py	/^def main():$/;"	kind:function	line:161
-main	../newClusterNBAdata.py	/^def main():$/;"	kind:function	line:69
+main	../newClusterNBAdata.py	/^def main():$/;"	kind:function	line:62
 main	../oldClusterNBAdata.py	/^def main():$/;"	kind:function	line:112
 main	../organizeNBAdata.py	/^def main():$/;"	kind:function	line:333
 main	../twitterStream.py	/^def main():$/;"	kind:function	line:40
@@ -141,14 +141,14 @@ matplotlib	../twitterStream.py	/^import matplotlib.pyplot as plt$/;"	kind:namesp
 max_coords	../clustering/clustering.py	/^def max_coords(points):$/;"	kind:function	line:55
 max_dim	../clustering/clustering.py	/^def max_dim(points,i):$/;"	kind:function	line:39
 meanLink	../clustering/clustering.py	/^def meanLink(c1,c2):$/;"	kind:function	line:350
-means_cost	../clustering/clustering.py	/^def means_cost(centers,points):$/;"	kind:function	line:435
+means_cost	../clustering/clustering.py	/^def means_cost(centers,points):$/;"	kind:function	line:436
 merge	../clustering/clustering.py	/^def merge(clusters,closest_pair):$/;"	kind:function	line:357
 min_cluster_cost	../oldClusterNBAdata.py	/^def min_cluster_cost(points,start,end):$/;"	kind:function	line:18
 min_coords	../clustering/clustering.py	/^def min_coords(points):$/;"	kind:function	line:47
 min_dim	../clustering/clustering.py	/^def min_dim(points,i):$/;"	kind:function	line:16
-misc	../player/player.py	/^    misc = {}$/;"	kind:variable	line:34
+misc	../player/player.py	/^    misc = {}$/;"	kind:variable	line:33
 newClusterNBAdata.py	../newClusterNBAdata.py	1;"	kind:file	line:1
-normalizePosition	../player/player.py	/^def normalizePosition(pos):$/;"	kind:function	line:4
+normalizePosition	../player/player.py	/^def normalizePosition(pos):$/;"	kind:function	line:3
 np	../clustering/clustering.py	/^import numpy as np$/;"	kind:namespace	line:1
 numericalShotCategories	../organizeNBAdata.py	/^numericalShotCategories = ['shot_distance','shot_made_flag','loc_x','loc_y']$/;"	kind:variable	line:147
 oldClusterNBAdata.py	../oldClusterNBAdata.py	1;"	kind:file	line:1
@@ -173,7 +173,7 @@ playerVU	../getNBAdata.py	/^def playerVU(playerId):$/;"	kind:function	line:116
 players	../getBoxScore.py	/^players = jsonToList('nbaStats\/player.txt')$/;"	kind:variable	line:16
 plt	../twitterStream.py	/^import matplotlib.pyplot as plt$/;"	kind:namespace	line:8
 point_list_remove	../clustering/clustering.py	/^def point_list_remove(l,point):$/;"	kind:function	line:124
-print_cluster_stats	../helpers/__init__.py	/^def print_cluster_stats(clustering_method,k,clusters,feature_set,writer):$/;"	kind:function	line:61
+print_cluster_stats	../helpers/__init__.py	/^def print_cluster_stats(clustering_method,k,clusters,feature_set,writer,path_name,player_dict):$/;"	kind:function	line:61
 print_cluster_stats	../oldClusterNBAdata.py	/^def print_cluster_stats(clusters):$/;"	kind:function	line:89
 random	../clustering/clustering.py	/^import random$/;"	kind:namespace	line:2
 re	../twitterStream.py	/^import re$/;"	kind:namespace	line:9
@@ -181,12 +181,12 @@ requests	../getBoxScore.py	/^import requests$/;"	kind:namespace	line:1
 requests	../getNBAdata.py	/^import requests$/;"	kind:namespace	line:2
 reval_center	../clustering/clustering.py	/^def reval_center(C, index, assigned):$/;"	kind:function	line:272
 run_all_clustering	../newClusterNBAdata.py	/^def run_all_clustering(points,player_dict,k,feature_set):$/;"	kind:function	line:5
-run_all_possible_combinations	../newClusterNBAdata.py	/^def run_all_possible_combinations(points,player_dict,k_range):$/;"	kind:function	line:27
-run_assignment_clustering	../newClusterNBAdata.py	/^def run_assignment_clustering(points,player_dict,k,feature_set,writer):$/;"	kind:function	line:11
+run_all_possible_combinations	../newClusterNBAdata.py	/^def run_all_possible_combinations(points,player_dict,k_range,f,path_name):$/;"	kind:function	line:27
+run_assignment_clustering	../newClusterNBAdata.py	/^def run_assignment_clustering(points,player_dict,k,feature_set,writer,path_name):$/;"	kind:function	line:11
 run_clustering	../oldClusterNBAdata.py	/^def run_clustering(picker_function,k,title,points,player_dict):$/;"	kind:function	line:100
 run_hierarchical_clustering	../newClusterNBAdata.py	/^def run_hierarchical_clustering(points,player_dict,k,feature_set,writer):$/;"	kind:function	line:19
 shotChartCategories	../organizeNBAdata.py	/^shotChartCategories = ['minutes_remaining','seconds_remaining','event_type','action_type','shot_type',$/;"	kind:variable	line:132
-shotCharts	../player/player.py	/^    shotCharts = {}$/;"	kind:variable	line:32
+shotCharts	../player/player.py	/^    shotCharts = {}$/;"	kind:variable	line:31
 singleLink	../clustering/clustering.py	/^def singleLink(c1,c2):$/;"	kind:function	line:330
 square_distances	../clustering/clustering.py	/^def square_distances(point,points):$/;"	kind:function	line:70
 sys	../oldClusterNBAdata.py	/^import sys$/;"	kind:namespace	line:2
@@ -194,9 +194,9 @@ teamBoxScore	../getNBAdata.py	/^def teamBoxScore(teamId):$/;"	kind:function	line
 teamFourFactor	../getNBAdata.py	/^def teamFourFactor(teamId):$/;"	kind:function	line:64
 teamMisc	../getNBAdata.py	/^def teamMisc(teamId):$/;"	kind:function	line:90
 teamVU	../getNBAdata.py	/^def teamVU(teamId):$/;"	kind:function	line:125
-toString	../player/player.py	/^    def toString(self):$/;"	kind:member	line:48
+toString	../player/player.py	/^    def toString(self):$/;"	kind:member	line:47
 twitterStream.py	../twitterStream.py	1;"	kind:file	line:1
 urlopen	../getNBAdata.py	/^from urllib2 import Request, urlopen, URLError$/;"	kind:namespace	line:1
-usage	../player/player.py	/^    usage = {}$/;"	kind:variable	line:35
+usage	../player/player.py	/^    usage = {}$/;"	kind:variable	line:34
 valuesDict	../organizeNBAdata.py	/^valuesDict = {}$/;"	kind:variable	line:135
 word_in_text	../twitterStream.py	/^def word_in_text(word, text):$/;"	kind:function	line:26

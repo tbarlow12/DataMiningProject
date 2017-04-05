@@ -58,7 +58,7 @@ def get_position_dict(l):
 
 
 
-def print_cluster_stats(clustering_method,k,clusters,feature_set,writer):
+def print_cluster_stats(clustering_method,k,clusters,feature_set,writer,path_name,player_dict):
     #method,k,cluster,size,center,center-forward,forward-center,forward,forward-guard,guard-forward,guard
     positions = ['Center','Forward','Wing','Guard']
     i = 1
@@ -77,11 +77,10 @@ def print_cluster_stats(clustering_method,k,clusters,feature_set,writer):
         line += ','
         for player in cluster:
             id = int(player[0][0])
-            line += str(id) + ' '
+            line += str(id) + '-' + player_dict[id][0][1] + '/'
         line = line[:-1]
-
-
-        writer.write(line + '\n')
+        line += ',{}\n'.format(path_name)
+        writer.write(line)
         i += 1
 
 
