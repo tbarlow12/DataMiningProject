@@ -42,7 +42,7 @@ grouped_cols_dict = {
 }
 
 def run_all_possible_combinations(points,player_dict,k_range,f,path_name):
-    
+
 
     combinations = h.all_possible_combinations([0,1,2,3,4,5,6])
 
@@ -57,11 +57,9 @@ def run_all_possible_combinations(points,player_dict,k_range,f,path_name):
 
             run_assignment_clustering(points,player_dict,k,feature_set,f,path_name)
 
+def run_stuff():
 
-
-def main():
-    '''
-    files = ['2010','2011','2012','2013','2014','2015','2016','2010-2016']
+    #files = ['2010','2011','2012','2013','2014','2015','2016','2010-2016']
     with open('hierarchical_output.csv','w') as f:
         f.write('Method,K,Cluster,Size,Center,Forward,Wing,Guard,Feature Set,Player IDs,Season\n')
 
@@ -76,9 +74,8 @@ def main():
         limited = cl.limit_all_dims(points,features)
         run_hierarchical_clustering(limited,player_dict,3,9,feature_set,f,'2010-2016')
 
-'''
+def run_other_stuff():
     files = ['2010-2016']
-
     with open('assignment_output_combined.csv','w') as f:
         f.write('Method,K,Cluster,Size,Center,Forward,Wing,Guard,Feature Set,Player IDs,Season\n')
 
@@ -90,6 +87,14 @@ def main():
 
             #see "ColumnKey.txt" for index of columns
             run_all_possible_combinations(points,player_dict,range(3,9),f,path_name)
+
+
+def main():
+
+    run_stuff()
+
+    #run_other_stuff()
+
 
 if __name__ == '__main__':
     main()
