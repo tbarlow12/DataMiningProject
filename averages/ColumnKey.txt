@@ -119,3 +119,6 @@
 #118 : shot_zone_area-Right Side Center(RC)
 #119 : shot_type-3PT Field Goal
 #120 : shot_type-2PT Field Goal
+
+
+https://app.powerbi.com/view?r=eyJrIjoiODgzZjhiMmQtYmU5My00NzM4LTk1MjUtNWVhYWUzM2RiYzhlIiwidCI6Ijg0YzMxY2EwLWFjM2ItNGVhZS1hZDExLTUxOWQ4MDIzM2U2ZiIsImMiOjZ9
