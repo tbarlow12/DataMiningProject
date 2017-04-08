@@ -57,7 +57,6 @@ def get_position_dict(l):
     return pos_dict
 
 
-
 def print_cluster_stats(clustering_method,k,clusters,feature_set,writer,path_name,player_dict):
     #method,k,cluster,size,center,center-forward,forward-center,forward,forward-guard,guard-forward,guard
     positions = ['Center','Forward','Wing','Guard']
@@ -83,6 +82,30 @@ def print_cluster_stats(clustering_method,k,clusters,feature_set,writer,path_nam
         writer.write(line)
         i += 1
 
+def print_cluster_stats2(clustering_method,k,clusters,feature_set,writer,path_name,player_dict):
+    #method,k,cluster,size,center,center-forward,forward-center,forward,forward-guard,guard-forward,guard
+    positions = ['Center','Forward','Wing','Guard']
+    i = 1
+    for cluster in clusters:
+        #print('\n\nCLUSTER {} - Size: {}'.format(i,len(l)))
+        pos_dict = get_position_dict(cluster)
+        line = '{},{},{},{},'.format(clustering_method,k,i,len(cluster))
+        for position in positions:
+            if position in pos_dict:
+                line += '{},'.format(pos_dict[position])
+            else:
+                line += '0,'
+        for item in feature_set:
+            line += str(item) + ' '
+        line = line[:-1]
+        line += ','
+        for player in cluster:
+            id = int(player.index)
+            line += str(id) + '-' + player_dict[id][0][1] + '/'
+        line = line[:-1]
+        line += ',{}\n'.format(path_name)
+        writer.write(line)
+        i += 1
 
 def all_possible_combinations(possible_features):
     feature_sets = list(chain.from_iterable(combinations(possible_features, r) for r in range(len(possible_features)+1)))

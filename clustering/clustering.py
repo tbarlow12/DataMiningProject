@@ -1,6 +1,7 @@
 import numpy as np
 import helpers as h
 import random
+import pdb
 import bisect
 
 
@@ -327,12 +328,22 @@ def getMaxDistance(set,d):
                 maxP2 = p2
     return [max,maxP1,maxP2]
 
+single_link_dist = {}
 
 def singleLink(c1,c2):
     min = float('inf')
     for p1 in c1:
         for p2 in c2:
-            e = euclidean(p1.coords,p2.coords)
+            if p1.index in single_link_dist:
+                if p2.index in single_link_dist[p1.index]:
+                    e = single_link_dist[p1.index][p2.index]
+                else:
+                    e = euclidean(p1.coords,p2.coords)
+                    single_link_dist[p1.index][p2.index] = e
+            else:
+                e = euclidean(p1.coords,p2.coords)
+                d = {p2.index: e}
+                single_link_dist[p1.index] = d
             if e < min:
                 min = e
     return min
@@ -394,7 +405,14 @@ def hierarchicalClustering(set,k,top_k,distance_func,feature_set,writer,path_nam
         merge(clusters,closestClusters(clusters,distance_func))
         print(len(clusters))
         if len(clusters) <= top_k:
-            h.print_cluster_stats('Single-Link',len(clusters),clusters,feature_set,writer,path_name,player_dict)
+            player_clusters = []
+            for cluster in clusters:
+                player_cluster = []
+                for p in cluster:
+                    id = p.index
+                    player_cluster.append(player_dict[id])
+                player_clusters.append(player_cluster)
+            h.print_cluster_stats('Single-Link',len(clusters),player_clusters,feature_set,writer,path_name,player_dict)
     #print(ave_dist(clusters))
     return [[p.index for p in c] for c in clusters]
 

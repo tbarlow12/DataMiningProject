@@ -20,8 +20,6 @@ def run_hierarchical_clustering(points,player_dict,k,top_k,feature_set,writer,pa
     #mean_link = cl.hierarchicalClustering(points,k,cl.meanLink)
     single_link = cl.hierarchicalClustering(points,k,top_k,cl.singleLink,feature_set,writer,path_name,player_dict)
     #complete_link = cl.hierarchicalClustering(points,k,cl.completeLink)
-    clusters = [[player_dict[i] for i in c] for c in single_link]
-    h.print_cluster_stats('Single Link', k, clusters, feature_set, writer)
 
 box_score_cols = range(1,16)
 advanced_cols = range(16,31)
@@ -59,20 +57,22 @@ def run_all_possible_combinations(points,player_dict,k_range,f,path_name):
 
 def run_stuff():
 
-    #files = ['2010','2011','2012','2013','2014','2015','2016','2010-2016']
-    with open('hierarchical_output.csv','w') as f:
+    seasons = ['2010-2016','2010','2011','2012','2013','2014','2015','2016']
+    with open('hierarchical_output2.csv','w') as f:
         f.write('Method,K,Cluster,Size,Center,Forward,Wing,Guard,Feature Set,Player IDs,Season\n')
-
-        path = 'averages/2010-2016.csv'
-        data = h.get_data(path)
-        player_dict = data[0]
-        points = data[1]
-        feature_set = [0,1,2,3,6]
-        features = []
-        for group in feature_set:
-            features.extend(grouped_cols_dict[group])
-        limited = cl.limit_all_dims(points,features)
-        run_hierarchical_clustering(limited,player_dict,3,9,feature_set,f,'2010-2016')
+        for season in seasons:
+            path = 'averages/{}.csv'.format(season)
+            data = h.get_data(path)
+            player_dict = data[0]
+            points = data[1]
+            #feature_sets = [[0],[1],[2],[3],[4],[5],[6],[0,1,2,3,6],[2,3,4,5,6]]
+            feature_sets = h.all_possible_combinations([0,1,2,3,6])
+            for feature_set in feature_sets:
+                features = []
+                for group in feature_set:
+                    features.extend(grouped_cols_dict[group])
+                limited = cl.limit_all_dims(points,features)
+                run_hierarchical_clustering(limited,player_dict,3,21,feature_set,f,season)
 
 def run_other_stuff():
     files = ['2010-2016']
